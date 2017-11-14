@@ -35,17 +35,17 @@
     <div class="conter">
       <mu-paper class="earnings">
         <mu-bottom-nav @change="handleChange">
-          <mu-bottom-nav-item value="one" title="我的收益" icon=":iconfont icon-shouyi"/>
-          <mu-bottom-nav-item value="two" title="推广收益" icon=":iconfont icon-shouyi1"/>
-          <mu-bottom-nav-item value="three" title="其他收益" icon=":iconfont icon-iconfontxiaozhucunqianguan"/>
+          <mu-bottom-nav-item value="one" title="我的收益" icon=":iconfont icon-shouyi"><span class="money">200</span></mu-bottom-nav-item>
+          <mu-bottom-nav-item value="two" title="推广收益" icon=":iconfont icon-shouyi1"><span class="money">200</span></mu-bottom-nav-item>
+          <mu-bottom-nav-item value="three" title="其他收益" icon=":iconfont icon-iconfontxiaozhucunqianguan"><span class="money">200</span></mu-bottom-nav-item>
         </mu-bottom-nav>
       </mu-paper>
       <!-- 订单 -->
       <mu-paper class="order">
         <mu-bottom-nav @change="orderChange">
-          <mu-bottom-nav-item value="one" title="我的订单" icon=":iconfont icon-dingdan"/>
-          <mu-bottom-nav-item value="two" title="推广二维码" icon=":iconfont icon-erweima"/>
-          <mu-bottom-nav-item value="three" title="注册没支付" icon=":iconfont icon-zhifu7"/>
+          <mu-bottom-nav-item value="order" title="我的订单" icon=":iconfont icon-dingdan"/>
+          <mu-bottom-nav-item value="code" title="推广二维码" icon=":iconfont icon-erweima"/>
+          <mu-bottom-nav-item value="" title="注册没支付" icon=":iconfont icon-zhifu7"/>
         </mu-bottom-nav>
       </mu-paper>
     </div>
@@ -69,13 +69,21 @@
     },
     methods: {
       handleChange (val) {
-        console.log(val)
         this.$router.push({
           path: `/my/earnings/${val}`
         })
       },
       orderChange (val) {
-        console.log(val)
+        if (!val) {
+          this.setAlert({
+            dialog: true,
+            text: '暂未开放，敬请期待'
+          })
+          return
+        }
+        this.$router.push({
+          path: `/my/${val}`
+        })
       },
       returnBtn() {
         this.setAlert({
@@ -169,6 +177,10 @@
     }
     .earnings {
       margin-top: .4rem /* 15/37.5 */;
+      .money {
+        font-size: .32rem /* 12/37.5 */;
+        color: #f65458;
+      }
     }
     .order {
       // @include border-b-1px(100%);

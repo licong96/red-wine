@@ -1,22 +1,21 @@
 <template lang="html">
   <!-- 详细页 -->
   <section class="full-fixed detail">
-    <scroll ref="scroll">
+    <scroll :data="detailData" ref="scroll">
       <div>
       <!-- 图片 -->
       <div class="top-img">
-        <img src="https://img.alicdn.com/imgextra/i1/3075140505/TB1c4DoXQfb_uJkHFJHXXb4vFXa_!!0-item_pic.jpg_640x640Q50s50.jpg" alt="">
+        <img :src="detailData.src" :listem-scroll="listemScroll" @scroll="scroll" alt="">
       </div>
       <div class="content">
         <div class="title">
-          <p class="text">ALDI奥乐齐 澳洲原瓶进口红酒梅洛葡萄酒干红750ml*6</p>
-          <span class="money"><i class="iconfont icon-renminbi"></i>599</span>
+          <p class="text">{{detailData.title}}</p>
+          <span class="money"><i class="iconfont icon-renminbi"></i>{{detailData.money}}</span>
           <div class="desc">
-            <span>月销售：289件</span>
+            <span>月销售：{{detailData.sales}}件</span>
           </div>
         </div>
-        <div class="img-wrap">
-          <img :src="item" v-for="(item, index) in image" :key="index" @load="refresh" alt="">
+        <div class="img-wrap" v-html="detailData.content">
         </div>
       </div>
     </div>
@@ -42,10 +41,12 @@
 
 <script>
   import Scroll from '@/components/Scroll'
-  
+  import {api} from '@/api/config'
+
   export default {
     data() {
       return {
+        detailData: {},
         image: [
           'https://img.alicdn.com/imgextra/i4/217103012/TB2MpymobsTMeJjSszgXXacpFXa_!!217103012.jpg',
           'https://img.alicdn.com/imgextra/i4/217103012/TB2.Gt5hVXXXXawXXXXXXXXXXXX-217103012.jpg_760x760Q50s50.jpg_.webp',
@@ -54,7 +55,28 @@
         ]
       }
     },
+    created() {
+      this.listemScroll = true
+      this.getData()
+    },
     methods: {
+      scroll(pos) {
+        console.log(pos.y)
+        console.log(this.$refs.scroll.maxScrollY)
+      },
+      getData() {
+        this.axios.post(`${api}/index/Goods/goods_detail`, {
+          id: this.$route.params
+        })
+        .then((response) => {
+          console.log(response.data)
+          this.detailData = response.data
+          // control === '1'
+        })
+        .catch((error) => {
+          alert('网路错误', error)
+        })
+      },
       refresh() {
         if (this.time) {
           clearTimeout(this.time)

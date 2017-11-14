@@ -1,12 +1,17 @@
 <template lang="html">
   <!-- 其他收益 -->
   <section class="earnings-one">
-    其他收益
+    <list-earnings></list-earnings>
   </section>
 </template>
 
 <script>
+  import ListEarnings from '@/components/ListEarnings'
+
   export default {
+    components: {
+      ListEarnings
+    }
   }
 </script>
 

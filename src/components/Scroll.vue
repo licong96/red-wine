@@ -9,11 +9,11 @@
 import BScroll from 'better-scroll'
 export default {
   props: {
-    probeType: {    // 派发scroll事件
+    probeType: {    // 派发scroll事件，截流
       type: Number,
       default: 1
     },
-    click: {      // 派发事件
+    click: {
       type: Boolean,
       default: true
     },

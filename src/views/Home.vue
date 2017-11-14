@@ -21,16 +21,16 @@
       <!-- 分红 -->
       <div class="profit">
         <p class="title">微股分红权</p>
-        <mu-raised-button label="点击抢购" class="demo-raised-button" primary/>
+        <mu-raised-button label="点击抢购" class="demo-raised-button" primary @click="openPay"/>
       </div>
       <div class="gridlist-demo-container list">
         <mu-grid-list class="gridlist-demo">
-          <mu-grid-tile v-for="tile, index in list" :key="index">
-            <img class="img" :src="tile.image"/>
-            <span slot="title">{{tile.title}}</span>
-            <span slot="subTitle"><i class="iconfont icon-renminbi"></i><b>{{tile.author}}</b></span>
+          <mu-grid-tile v-for="item in list" :key="item.id">
+            <img class="img" :src="item.src" @load="refresh"/>
+            <span slot="title">{{item.title}}</span>
+            <span slot="subTitle"><i class="iconfont icon-renminbi"></i><b>{{item.money}}</b></span>
             <!-- 一个不是办法的办法，解决点击无效 -->
-            <div class="click" @click="openDetail(index)"></div>
+            <div class="click" @click="openDetail(item.id)"></div>
           </mu-grid-tile>
         </mu-grid-list>
       </div>
@@ -46,34 +46,38 @@
 <script>
   import Scroll from '@/components/Scroll'
   import {mapMutations} from 'vuex'
+  import {api} from '@/api/config'
 
   export default {
     data () {
       return {
-        list: [{
-          image: 'https://img.alicdn.com/imgextra/i1/725677994/TB1JOuxcv2H8KJjy0FcXXaDlFXa_!!0-item_pic.jpg_640x640Q50s50.jpg',
-          title: 'ALDI奥乐齐 澳洲原瓶进口红酒梅洛葡萄酒干红750ml*6',
-          author: '1200'
-        }, {
-          image: 'https://img.alicdn.com/imgextra/i1/725677994/TB1JOuxcv2H8KJjy0FcXXaDlFXa_!!0-item_pic.jpg_640x640Q50s50.jpg',
-          title: '澳洲原瓶进口红酒梅洛葡萄酒干红750ml',
-          author: '2000'
-        }, {
-          image: 'https://img.alicdn.com/bao/uploaded/i4/3075140505/TB20l6lXPgy_uJjSZTEXXcYkFXa_!!3075140505.jpg_b.jpg',
-          title: '进口红酒梅洛葡萄酒干红',
-          author: '1500'
-        }, {
-          image: 'https://img.alicdn.com/bao/uploaded/i4/3075140505/TB20l6lXPgy_uJjSZTEXXcYkFXa_!!3075140505.jpg_b.jpg',
-          title: '进口红酒梅洛葡萄酒干红',
-          author: '1300'
-        }]
+        list: []
       }
     },
+    created() {
+      this.getDataList()
+    },
     methods: {
+      getDataList() {
+        this.axios.post(`${api}/index/Goods/goods_list`, {
+          count: 4
+        })
+        .then((response) => {
+          this.list = response.data
+        })
+        .catch((error) => {
+          alert('网路错误', error)
+        })
+      },
       handleChange(val) {   // 分类
         this.setAlert({
           dialog: true,
           text: '暂未开放，敬请期待'
+        })
+      },
+      openPay() {   // 支付
+        this.$router.push({
+          path: `/home/pay`
         })
       },
       openDetail(id) {    // 打开详细页
@@ -105,9 +109,10 @@
   @import "../common/sass/variable";
 
   .home {
+    overflow: hidden;
     position: absolute;
     top: 0;
-    bottom: 66px;
+    bottom: 56px;
     background-color: $color-background-e;
   }
   // 轮播
@@ -143,6 +148,7 @@
   // 列表
   .list {
     margin-top: .27rem /* 10/37.5 */;
+    padding-bottom: .27rem /* 10/37.5 */;
     background-color: #fff;
     .click {
       position: absolute;
@@ -168,6 +174,7 @@
     }
     .img {
       width: 100%;
+      height: 100%;
     }
   }
   .gridlist-demo-container{

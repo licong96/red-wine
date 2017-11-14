@@ -1,5 +1,5 @@
 <template lang="html">
-  <section class="full-fixed earnings">
+  <section class="full-fixed my-earnings">
     <mu-tabs :value="activeTab" @change="handleTabChange">
       <mu-tab value="one" title="我的收益"/>
       <mu-tab value="two" title="推广收益"/>
@@ -9,9 +9,9 @@
       <scroll ref="scroll">
         <div>
           <keep-alive>
-            <transition name="transX">
-              <router-view name="main" @scrolls="scrolls"></router-view>
-            </transition>
+            <router-view name="main" @scrolls="scrolls"></router-view>
+            <!-- <transition name="transX">
+            </transition> -->
           </keep-alive>
         </div>
       </scroll>
@@ -32,7 +32,7 @@
       handleTabChange (val) {
         this.activeTab = val
         console.log(val)
-        this.$router.push({
+        this.$router.replace({
           path: `/my/earnings/${val}`
         })
       },
@@ -51,7 +51,8 @@
 </script>
 
 <style scoped lang="scss">
-  .earnings {
+  .my-earnings {
+    overflow: hidden;
     background-color: #fff;
   }
 </style>

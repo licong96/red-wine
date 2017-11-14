@@ -6,7 +6,9 @@ import router from './router'
 import store from './store'
 import MuseUI from 'muse-ui'
 import libFlexible from 'lib-flexible'
-import fastclick from 'fastclick'
+import axios from 'axios'
+import localstore from 'store'
+// import fastclick from 'fastclick'
 
 import 'muse-ui/dist/muse-ui.css'
 import '@/common/sass/index.scss'
@@ -16,7 +18,9 @@ Vue.use(libFlexible)                // 计算 rem
 Vue.use(require('vue-wechat-title'))  // 微信title
 Vue.config.productionTip = false
 
-fastclick.attach(document.body)
+Vue.prototype.axios = axios
+Vue.prototype.localstore = localstore
+// fastclick.attach(document.body)
 
 /* eslint-disable no-new */
 new Vue({

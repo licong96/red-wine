@@ -3,3 +3,11 @@
 @import "./muse.scss";
 // @import "../fonts/iconfont.css"
 // @import "./icon.scss";
+
+.detail {
+  .img-wrap {
+    img {
+      width: 100%;
+    }
+  }
+}
